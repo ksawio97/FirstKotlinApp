@@ -1,7 +1,7 @@
 package com.example.myfirstapp
 
-import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,15 +9,16 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.example.myfirstapp.databinding.FragmentFirstBinding
+import com.example.myfirstapp.databinding.FragmentMainBinding
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class FirstFragment : Fragment() {
+class MainFragment : Fragment() {
 
-    private var _binding: FragmentFirstBinding? = null
+    private var _binding: FragmentMainBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -28,7 +29,7 @@ class FirstFragment : Fragment() {
             savedInstanceState: Bundle?
     ): View {
 
-        _binding = FragmentFirstBinding.inflate(inflater, container, false)
+        _binding = FragmentMainBinding.inflate(inflater, container, false)
         return binding.root
 
     }
@@ -36,32 +37,36 @@ class FirstFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //toast
         view.findViewById<Button>(R.id.toast_button).setOnClickListener {
-            val myToast = Toast.makeText(context, "Hello Toast!", Toast.LENGTH_SHORT)
+            val myToast = Toast.makeText(context, "GAMBLE!!!!", Toast.LENGTH_SHORT)
             myToast.show()
         }
 
+        val scoreViewModel = ViewModelProvider(requireActivity())[ScoreViewModel::class.java]
+        val scoreLiveData = scoreViewModel.getScore()
+
+        //count_button on click handle
         view.findViewById<Button>(R.id.count_button).setOnClickListener {
-            countMe(view)
+            scoreViewModel.addToScore(1)
         }
 
-        view.findViewById<Button>(R.id.random_button).setOnClickListener {
+        //textview_first on change value update
+        scoreLiveData.observe(requireActivity()) { newScore ->
             val shownCountText = view.findViewById<TextView>(R.id.textview_first)
-            val currCount = shownCountText.text.toString().toInt()
-            val action = FirstFragmentDirections.actionFirstFragmentToSecondFragment(currCount)
+            shownCountText.text = (newScore ?: 0).toString()
+        }
+
+        //random_button on click handle
+        view.findViewById<Button>(R.id.random_button).setOnClickListener {
+            val action = MainFragmentDirections.actionFirstFragmentToSecondFragment()
             findNavController().navigate(action)
         }
     }
 
-    @SuppressLint("SetTextI18n")
-    private fun countMe(view: View) {
-        val shownCountText = view.findViewById<TextView>(R.id.textview_first)
-        val countText = shownCountText.text.toString()
-        shownCountText.text = (countText.toInt() + 1).toString()
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
+        Log.i("debug", "destroyFirstFragment")
         _binding = null
     }
 }

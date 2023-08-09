@@ -7,7 +7,7 @@
     android:background="@color/primaryDark"
     android:clipToPadding="false"
     android:fillViewport="true"
-    tools:context=".FirstFragment">
+    tools:context=".MainFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -20,7 +20,6 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="300dp"
             android:fontFamily="sans-serif-black"
-            android:text="@string/number"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="60sp"
@@ -37,7 +36,7 @@
             android:layout_marginTop="70dp"
             android:layout_marginEnd="24dp"
             android:backgroundTint="@color/secondaryDark"
-            android:text="@string/random"
+            android:text="@string/gamble"
             android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/textview_first" />
@@ -58,9 +57,11 @@
             android:id="@+id/count_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="70dp"
+            android:layout_marginTop="125dp"
             android:backgroundTint="@color/secondaryDark"
-            android:text="@string/count"
+            android:scaleX="1.2"
+            android:scaleY="1.2"
+            android:text="@string/tap"
             android:textColor="@color/white"
             app:layout_constraintEnd_toStartOf="@+id/random_button"
             app:layout_constraintHorizontal_bias="0.59"
